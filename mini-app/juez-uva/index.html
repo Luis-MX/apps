@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mis apps</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+  <div id="app">
+    <v-app id="inspire">
+      <v-navigation-drawer app></v-navigation-drawer>
+      <v-toolbar app color="indigo">
+          <v-toolbar-title>Navegador de problemas del Juez UVa</v-toolbar-title>
+      </v-toolbar>
+      <v-content>
+        <v-container>
+          <p>{{fecha}}</p>
+          <h3>Problemas de Competitive Programming 3</h3>
+          <v-btn v-on:click="cargarCP3">Mostrar Problemas</v-btn>
+          <v-list v-if="ver_listado">
+            <v-list-tile
+              v-for="(elemento, indice) in listado"
+              :key="indice"
+              @click="clickLista(indice)"
+            >
+              <v-list-tile-content>
+                <v-list-tile-title v-text="elemento"></v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list>
+          <v-expansion-panel v-else  v-for="(elemento, indice) in listado" :key="indice">
+            <v-expansion-panel-content>
+              <div slot="header">{{ elemento.title }} [{{ elemento.length }}]</div>
+              <v-card>
+                <v-card-text>
+                  <ol>
+                    <li v-for="e in elemento">
+                      <a v-bind:id="e" target="_blank"> {{ cargarDatosNumProblema(e) }} </a>
+                    </li>
+                  </ol>
+                </v-card-text>
+              </v-card>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-container>
+      </v-content>
+      <v-footer app></v-footer>
+    </v-app>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
