@@ -1,0 +1,8 @@
+
+GET https://uhunt.onlinejudge.org/api/uname2uid/felix_halim HTTP/1.1
+
+
+
+GET https://uhunt.onlinejudge.org/api/subs-user/339 HTTP/1.1
+
+GET https://uhunt.onlinejudge.org/api/subs-user-last/339/10 HTTP/1.1
