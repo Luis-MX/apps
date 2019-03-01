@@ -14,6 +14,17 @@ var listadoUVaStorage = {
   }
 }
 
+var cabeceraTabla = [
+  { text: 'ID', value: 'problema', sortable: false },
+  { text: 'Nombre', value: 'nombre', sortable: false },
+  { text: 'Veredicto', value: 'veredicto', sortable: false },
+  { text: 'Runtime', value: 'runtime', sortable: false },
+  { text: 'Fecha', sortable: false },
+  { text: 'Lenguaje', value: 'lang', sortable: false },
+  { text: 'Submission Rank', value: 'rank', sortable: false }
+]
+
+
 var app = new Vue({
   el: "#app",
   data: {
@@ -23,7 +34,36 @@ var app = new Vue({
     ver_listado: true,
     ruta: [],
     cacheCapitulos: [],
-    fecha: moment().locale("es").format('LL')
+    usuario: "",
+    reglasNombre: [
+      v => !!v || 'EL nombre es requerido'
+    ],
+    datosUsuario: [],
+    cabecera: cabeceraTabla,
+    lenguajes: [
+      "null",
+      "C",
+      "Java",
+      "C++",
+      "Pascal",
+      "C++11",
+      "Python 3",
+      "Go"
+    ],
+    veredictos: {
+      10: "Error de envio",
+      15: "No se puede juzgar",
+      20: "En cola",
+      30: "Compile error",
+      35: "Función restringida",
+      40: "Runtime error",
+      45: "Output limit",
+      50: "Time limit",
+      60: "Memory limit",
+      70: "Wrong answer",
+      80: "Presentation error",
+      90: "Accepted"
+    }
   },
   methods: {
     cargarCP3: function () {
@@ -73,6 +113,34 @@ var app = new Vue({
         document.getElementById(`${num}`).href = `${app.url_base_envio}${json.pid}`
       }))
       return `Cargando problema ${num}...`
+    },
+    mostrarDatosUsuario: function () {
+      fetch("https://uhunt.onlinejudge.org/api/uname2uid/" + this.usuario)
+      .then(response => response.text()
+      .then(function(texto) {
+        fetch("https://uhunt.onlinejudge.org/api/subs-user/" + texto)
+        .then(response => response.json())
+        .then(function (json) {
+          envios = json.subs
+          envios.sort((a,b) => b[4]-a[4])
+          json.subs = envios
+          app.datosUsuario = json
+        })
+      }))
+    },
+    cargarDatosEnvio: function (num) {
+      fetch("https://uhunt.onlinejudge.org/api/p/id/" + Math.abs(num))
+      .then(response => response.json()
+      .then(function(json) {
+        document.getElementById(`nombre-${Math.abs(num)}`).innerText = json.title
+      }))
+      return `---`
+    },
+    id: function (num) {
+      return `nombre-${num}`
+    },
+    fecha: function (timestamp) {
+      return moment.unix(timestamp).locale("es").format("DD/MMMM/YYYY HH:mm")
     }
   }
 })

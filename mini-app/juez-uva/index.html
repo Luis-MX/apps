@@ -19,9 +19,8 @@
       </v-toolbar>
       <v-content>
         <v-container>
-          <p>{{fecha}}</p>
           <h3>Problemas de Competitive Programming 3</h3>
-          <v-btn v-on:click="cargarCP3">Mostrar Problemas</v-btn>
+          <v-btn v-on:click="cargarCP3">Mostrar capitulos del libro</v-btn>
           <v-list v-if="ver_listado">
             <v-list-tile
               v-for="(elemento, indice) in listado"
@@ -47,6 +46,24 @@
               </v-card>
             </v-expansion-panel-content>
           </v-expansion-panel>
+          <v-text-field v-model="usuario" :rules="reglasNombre" label="Escribe tu usuario de UVa" required></v-text-field>
+          <v-btn v-on:click="mostrarDatosUsuario">Mostrar Datos</v-btn>
+          <p>{{ datosUsuario.name }}</p>
+          <v-data-table
+            :headers="cabecera"
+            :items="datosUsuario.subs"
+            class="elevation-1"
+          >
+            <template v-slot:items="envios">
+              <td class="text-xs-right">{{ envios.item[1] }}</td>
+              <td class="text-xs-right" v-bind:id="id(envios.item[1])">{{ cargarDatosEnvio(envios.item[1]) }}</td>
+              <td class="text-xs-right">{{ veredictos[envios.item[2]] }}</td>
+              <td class="text-xs-right">{{ envios.item[3]/1000 }}</td>
+              <td class="text-xs-right">{{ fecha(envios.item[4]) }}</td>
+              <td class="text-xs-right">{{ lenguajes[envios.item[5]] }}</td>
+              <td class="text-xs-right">{{ envios.item[6] }}</td>
+            </template>
+          </v-data-table>
         </v-container>
       </v-content>
       <v-footer app></v-footer>
